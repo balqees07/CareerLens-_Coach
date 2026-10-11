@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Practice interview answers out loud in English or Arabic and get delivery metrics plus structured STAR feedback.">
+<title>CareerLens Coach — practice interviews out loud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D1117; --panel:#141A22; --border:#242C38;
+    --text:#E7EAED; --text-dim:#8A96A3;
+    --accent:#2DD4BF; --warm:#F5A623; --miss:#F2707A; --on-accent:#06201D; --on-miss:#2A0A10;
+    --radius:14px;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#F6F7F9; --panel:#FFFFFF; --border:#E1E5EA;
+      --text:#141A22; --text-dim:#5B6472;
+      --accent:#08766F; --warm:#9A5C00; --miss:#C02F41; --on-accent:#fff; --on-miss:#fff;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#F6F7F9; --panel:#FFFFFF; --border:#E1E5EA;
+    --text:#141A22; --text-dim:#5B6472;
+    --accent:#08766F; --warm:#9A5C00; --miss:#C02F41; --on-accent:#fff; --on-miss:#fff;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:16px;}
+  body{margin:0; background:var(--bg); color:var(--text);
+    font-family:'Space Grotesk','IBM Plex Sans Arabic',system-ui,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:820px; margin:0 auto; padding:0 24px;}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  [lang="ar"], .ar{font-family:'IBM Plex Sans Arabic','Space Grotesk',system-ui,sans-serif;}
+
+  /* Hero */
+  .hero{padding:84px 0 48px; text-align:center;}
+  .wave{display:flex; gap:5px; align-items:center; justify-content:center; height:64px; margin:0 auto 32px;}
+  .wave i{display:block; width:5px; border-radius:3px; background:var(--accent); opacity:.85;
+    height:12px; animation:bar 1.4s ease-in-out infinite;}
+  .wave i:nth-child(odd){opacity:.5;}
+  @keyframes bar{0%,100%{height:10px;} 50%{height:54px;}}
+  @media (prefers-reduced-motion: reduce){ .wave i{animation:none !important; height:28px;} }
+  h1{font-size:clamp(2.2rem,6vw,3.4rem); font-weight:600; margin:0 0 14px; letter-spacing:-0.02em;}
+  .tagline{font-size:1.08rem; color:var(--text-dim); max-width:520px; margin:0 auto 20px;}
+  .byline{font-size:.85rem; color:var(--text-dim); margin:0;}
+  .byline a{color:var(--accent); text-decoration:none; border-bottom:1px solid currentColor;}
+  .pipeline{display:flex; justify-content:center; gap:10px; margin-top:36px; flex-wrap:wrap;}
+  .pipeline span{font-size:.78rem; padding:7px 14px; border:1px solid var(--border); border-radius:999px; color:var(--text-dim);}
+  .pipeline b{color:var(--text); font-weight:500;}
+
+  /* Panels */
+  .panel{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:22px; margin-bottom:16px;}
+  .panel h2{margin:0 0 4px; font-size:1.02rem; font-weight:600;}
+  .hint{margin:0 0 14px; font-size:.82rem; color:var(--text-dim);}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  label.f{display:block; font-size:.78rem; color:var(--text-dim); margin-bottom:12px;}
+  select,input[type=text],input[type=password],textarea{
+    display:block; width:100%; margin-top:6px; background:transparent; color:var(--text);
+    border:1.5px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.9rem;}
+  select option{background:var(--panel); color:var(--text);}
+  textarea{min-height:150px; resize:vertical; line-height:1.6;}
+  select:focus,input:focus,textarea:focus,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  button{font-family:inherit; cursor:pointer;}
+  .btn{background:transparent; color:var(--text); border:1.5px solid var(--border); border-radius:999px; padding:9px 18px; font-size:.85rem;}
+  .btn:hover{border-color:var(--accent);}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+  .cta{background:var(--accent); color:var(--on-accent); border:none; font-weight:600; font-size:.95rem; padding:13px 28px; border-radius:999px;}
+  .cta:disabled{opacity:.5; cursor:not-allowed;}
+  .rec{display:inline-flex; align-items:center; gap:10px; background:var(--accent); color:var(--on-accent); border:none; font-weight:600;
+    font-size:1rem; padding:14px 26px; border-radius:999px;}
+  .rec .dot{width:11px; height:11px; border-radius:50%; background:var(--on-accent);}
+  .rec.on{background:var(--miss); color:var(--on-miss);}
+  .rec.on .dot{background:var(--on-miss); animation:pulse 1.1s ease-in-out infinite;}
+  @keyframes pulse{50%{transform:scale(1.5); opacity:.55;}}
+  @media (prefers-reduced-motion: reduce){ .rec.on .dot{animation:none;} }
+  .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+  .spacer{flex:1;}
+
+  /* Question */
+  .qmeta{font-size:.78rem; color:var(--text-dim); display:flex; gap:10px; align-items:center; margin-bottom:10px;}
+  .qtype{border:1px solid var(--border); border-radius:999px; padding:2px 10px; font-size:.72rem;}
+  .qmain{font-size:1.35rem; font-weight:500; line-height:1.4; margin:0 0 6px;}
+  .qalt{font-size:.92rem; color:var(--text-dim); margin:0 0 20px;}
+  .timer{font-family:'IBM Plex Mono',monospace; font-size:1.05rem; min-width:3.6em;}
+  .status{font-size:.82rem; color:var(--text-dim); min-height:1.3em; margin:10px 0 0;}
+  .status.err{color:var(--miss);}
+  .note-box{border:1px solid var(--warm); color:var(--text); background:rgba(245,166,35,.08); border-radius:10px; padding:10px 14px; font-size:.84rem; margin-bottom:14px;}
+
+  /* Report */
+  #report{display:none; margin-top:28px;}
+  .tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:20px;}
+  .tile{border:1px solid var(--border); border-radius:12px; padding:14px 16px; background:var(--panel);}
+  .tile .k{font-size:.74rem; color:var(--text-dim);}
+  .tile .v{font-family:'IBM Plex Mono',monospace; font-size:1.6rem; font-weight:600; margin:2px 0;}
+  .tile .v small{font-size:.8rem; font-weight:400; color:var(--text-dim);}
+  .tile .s{font-size:.78rem; color:var(--text-dim);}
+  .tag{display:inline-block; font-size:.72rem; padding:1px 9px; border-radius:999px; border:1px solid var(--border);}
+  .tag.ok{border-color:var(--accent); color:var(--accent);}
+  .tag.warn{border-color:var(--warm); color:var(--warm);}
+  h3{font-size:.86rem; font-weight:600; margin:22px 0 10px;}
+  h3 .badge{font-weight:400; font-size:.72rem; color:var(--text-dim); border:1px solid var(--border); border-radius:999px; padding:1px 9px; margin-inline-start:8px;}
+  .star{display:grid; gap:8px;}
+  .star .r{display:grid; grid-template-columns:110px 1fr; gap:12px; align-items:start; padding:10px 12px; border:1px solid var(--border); border-radius:10px;}
+  .star .r .n{font-size:.84rem; font-weight:500;}
+  .star .r .d{font-size:.82rem; color:var(--text-dim);}
+  .bars5{display:inline-flex; gap:3px; vertical-align:middle; margin-inline-end:8px;}
+  .bars5 i{width:16px; height:6px; border-radius:2px; background:var(--border); display:block;}
+  .bars5 i.on{background:var(--accent);}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{font-family:'IBM Plex Mono',monospace; font-size:.76rem; padding:5px 11px; border-radius:8px; border:1px solid var(--accent); color:var(--accent);}
+  ul.clean{margin:0; padding-inline-start:18px; font-size:.88rem;}
+  ul.clean li{margin:5px 0;}
+  .follow{border:1px dashed var(--accent); border-radius:12px; padding:14px 16px; margin-top:20px;}
+  .follow p{margin:0 0 10px; font-size:.95rem;}
+  @media (max-width:560px){ .star .r{grid-template-columns:1fr;} }
+
+  /* History */
+  .hist-chart{display:block; width:100%; height:auto; margin:6px 0 10px;}
+  table.hist{width:100%; border-collapse:collapse; font-size:.8rem;}
+  table.hist th{font-weight:500; color:var(--text-dim); text-align:start; padding:6px 8px; border-bottom:1px solid var(--border);}
+  table.hist td{padding:6px 8px; border-bottom:1px solid var(--border); font-family:'IBM Plex Mono',monospace;}
+  table.hist td.q{font-family:inherit; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .tscroll{overflow-x:auto;}
+
+  details.panel summary{cursor:pointer; font-weight:600; font-size:1rem;}
+  details.panel[open] summary{margin-bottom:12px;}
+  footer{border-top:1px solid var(--border); padding:26px 0 54px; margin-top:30px; text-align:center;}
+  footer p{margin:0 0 6px; font-size:.78rem; color:var(--text-dim);}
+  .legal{max-width:640px; margin:0 auto 14px; text-align:start;}
+  .sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="wave" aria-hidden="true">
+      <i style="animation-delay:0s"></i><i style="animation-delay:.12s"></i><i style="animation-delay:.24s"></i>
+      <i style="animation-delay:.36s"></i><i style="animation-delay:.48s"></i><i style="animation-delay:.6s"></i>
+      <i style="animation-delay:.72s"></i><i style="animation-delay:.84s"></i><i style="animation-delay:.96s"></i>
+      <i style="animation-delay:1.08s"></i><i style="animation-delay:1.2s"></i>
+    </div>
+    <h1>CareerLens Coach</h1>
+    <p class="tagline">Practice interview answers out loud, in English or Arabic, and see exactly how you sound and how well you structure them.</p>
+    <p class="byline">Built by <a href="https://linkedin.com/in/balqees-al-zaidanin" target="_blank" rel="noopener">Balqees Al-Zaidanin</a> — AI &amp; Data Science graduate</p>
+    <div class="pipeline">
+      <span><b>1</b> &nbsp;Pick a role</span>
+      <span><b>2</b> &nbsp;Answer out loud</span>
+      <span><b>3</b> &nbsp;Get your feedback</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="setup-h">
+      <h2 id="setup-h">Set up your session</h2>
+      <p class="hint">Choose the role you are preparing for and the language you will answer in.</p>
+      <div class="grid3">
+        <label class="f">Role
+          <select id="role"></select>
+        </label>
+        <label class="f">I will answer in
+          <select id="lang">
+            <option value="en-US">English</option>
+            <option value="ar-JO">العربية (Arabic)</option>
+          </select>
+        </label>
+        <label class="f">Arabic wording
+          <select id="gender">
+            <option value="f">Feminine (بتعرفي)</option>
+            <option value="m">Masculine (بتعرف)</option>
+          </select>
+        </label>
+      </div>
+      <details style="margin-top:4px">
+        <summary style="font-size:.88rem; font-weight:500; cursor:pointer">Personal questions from your own project (recommended)</summary>
+        <p class="hint" style="margin-top:10px">Add one of your projects and the coach will ask you about the tools you actually used, the way a real interviewer would.</p>
+        <div class="grid2">
+          <label class="f">Project name <input type="text" id="pname" placeholder="e.g. Personal AI Assistant" maxlength="80"></label>
+          <label class="f">Technologies (comma separated) <input type="text" id="ptech" placeholder="e.g. MobileNetV2, FastAPI, TensorFlow" maxlength="160"></label>
+        </div>
+        <button class="btn" id="addProject" type="button">Add my project questions</button>
+      </details>
+    </section>
+
+    <section class="panel" aria-labelledby="q-h">
+      <h2 class="sr" id="q-h">Interview question</h2>
+      <div class="qmeta"><span id="qcount"></span><span class="qtype" id="qtype"></span></div>
+      <p class="qmain" id="qmain"></p>
+      <p class="qalt" id="qalt"></p>
+
+      <div id="srWarn" class="note-box" style="display:none">Speech recognition is not available in this browser. Use Chrome or Edge on desktop or Android, or type your answer in the box below.</div>
+
+      <div class="row">
+        <button class="rec" id="recBtn" type="button" aria-pressed="false"><span class="dot"></span><span id="recLabel">Start answering</span></button>
+        <span class="timer" id="timer" aria-live="off">00:00</span>
+        <span class="spacer"></span>
+        <button class="btn" id="prevBtn" type="button">Previous</button>
+        <button class="btn" id="nextBtn" type="button">Next question</button>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+
+      <label class="f" style="margin-top:14px">Your answer (the transcript appears here — edit any recognition mistakes before analysing)
+        <textarea id="answer" dir="auto" placeholder="Press “Start answering” and speak, or type your answer here."></textarea>
+      </label>
+      <div class="row">
+        <button class="cta" id="analyzeBtn" type="button">Analyze my answer</button>
+        <span class="hint" style="margin:0" id="analyzeHint"></span>
+      </div>
+    </section>
+
+    <section id="report" aria-labelledby="rep-h" tabindex="-1">
+      <div class="panel">
+        <h2 id="rep-h">Your feedback</h2>
+        <p class="hint" id="repQ"></p>
+
+        <h3>Delivery <span class="badge">measured from your recording</span></h3>
+        <div class="tiles" id="tiles"></div>
+        <div id="techBlock"></div>
+
+        <h3 id="structH">STAR phrase detection <span class="badge" id="structBadge"></span></h3>
+        <div class="star" id="star"></div>
+
+
+        <h3>Notes</h3>
+        <ul class="clean" id="notes"></ul>
+
+        <div class="follow" id="followBox">
+          <div class="hint" style="margin-bottom:6px">A follow-up an interviewer might ask next</div>
+          <p id="followText" dir="auto"></p>
+          <button class="btn" id="followBtn" type="button">Practice this follow-up</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="hist-h">
+      <div class="row"><h2 id="hist-h" style="margin:0">Your progress</h2><span class="spacer"></span>
+        <button class="btn" id="clearHist" type="button">Clear history</button></div>
+      <label class="hint" style="display:flex;gap:8px;align-items:center;margin:8px 0 0"><input type="checkbox" id="keepHist"> Remember my practice history on this device (off by default: history is cleared when you close or refresh the page)</label>
+      <p class="hint" style="margin-top:6px" id="histHint">Answer a few questions to see your trend.</p>
+      <div id="histChart"></div>
+      <div class="tscroll"><table class="hist" id="histTable" style="display:none"></table></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="legal">
+      <p><b>Good to know.</b> Speech recognition runs in your browser vendor’s speech service (for Chrome and Edge this means your audio is processed on their servers). Recognisers often leave out “um” and “uh”, so the filler count can be lower than reality. Silence length is estimated from the pauses between recognised phrases. Pace and duration ranges are rough guides, not rules.</p>
+    </div>
+    <p>CareerLens Coach — a personal project applying speech and NLP to a real job-search problem.</p>
+    <p class="mono" style="font-size:.72rem">Web Speech API · STAR phrase detection</p>
+  </footer>
+</div>
+
+<script>
+/* coach_logic.js — منطق AI Interview Coach (يشتغل بالمتصفح وبـ node للاختبار)
+ * نفس منطق نسخة Python: مقاييس محسوبة بالكود + فحص STAR بالقواعد + مولّد أسئلة المشاريع.
+ */
+const CoachLogic = (function () {
+  // JS: \w لا يشمل العربي، فنعرّف صنف الحروف يدوياً للحدود
+  const AR_LET = "\\u0620-\\u064A\\u0671-\\u06D3\\u0660-\\u0669"; // حروف فقط، بدون ، ؛ ؟
+  const W = "A-Za-z0-9" + AR_LET;
+  const NOT_BEFORE = "(?<![" + W + "])";
+  const NOT_AFTER = "(?![" + W + "])";
+
+  const FILLERS_EN = ["um", "umm", "uh", "uhh", "erm", "you know", "i mean",
+    "kind of", "sort of", "basically", "actually", "literally"];
+  const FILLERS_AR = ["يعني", "اه", "امم", "اممم", "ااا", "طيب", "بصراحة"];
+
+  const PACE_SLOW = 110, PACE_FAST = 170;       // حدود إرشادية تقريبية
+  const IDEAL_MIN_SEC = 45, IDEAL_MAX_SEC = 120, MIN_PACE_SEC = 8;
+
+  function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+  function normalizeAr(text) {
+    return text.replace(/[ً-ْـ]/g, "").replace(/[أإآ]/g, "ا");
+  }
+
+  function tokenize(text) {
+    return text.match(/[\u0620-\u064A\u0671-\u06D3A-Za-z0-9][\u0620-\u064A\u0671-\u06D3A-Za-z0-9'+#.\-]*/g) || [];
+  }
+
+  function detectLanguage(text) {
+    const ar = (text.match(/[\u0620-\u064A\u0671-\u06D3]/g) || []).length;
+    const en = (text.match(/[A-Za-z]/g) || []).length;
+    const total = ar + en;
+    if (!total) return "unknown";
+    const r = ar / total;
+    if (r > 0.8) return "ar";
+    if (r < 0.2) return "en";
+    return "mixed";
+  }
+
+  function countFillers(text) {
+    const norm = normalizeAr(text.toLowerCase());
+    const found = {};
+    FILLERS_EN.forEach(f => {
+      const n = (norm.match(new RegExp(NOT_BEFORE + esc(f) + NOT_AFTER, "g")) || []).length;
+      if (n) found[f] = n;
+    });
+    // حرف العطف (و/ف) بيلتصق بالكلمة التالية بالعربي ("وطيب")
+    FILLERS_AR.map(normalizeAr).forEach(f => {
+      const n = (norm.match(new RegExp(NOT_BEFORE + "[وف]?" + esc(f) + NOT_AFTER, "g")) || []).length;
+      if (n) found[f] = n;
+    });
+    const total = Object.values(found).reduce((a, b) => a + b, 0);
+    return { total, byWord: found };
+  }
+
+  // أطول فجوة بين أحداث التعرّف على الكلام (ms) — تقريب للوقفات، مش قياس دقيق
+  function longestGapSec(eventTimesMs) {
+    if (!eventTimesMs || eventTimesMs.length < 2) return 0;
+    let max = 0;
+    for (let i = 1; i < eventTimesMs.length; i++) max = Math.max(max, eventTimesMs[i] - eventTimesMs[i - 1]);
+    return Math.round(max / 100) / 10;
+  }
+
+  const TECH_TERMS = [
+    "Python", "Java", "JavaScript", "TypeScript", "C++", "C#", "Go", "Rust", "SQL", "R", "MATLAB", "Dart", "Flutter",
+    "FastAPI", "Django", "Flask", "React", "Node.js", "Streamlit", "Gradio",
+    "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "Keras", "Scikit-learn", "Pandas", "NumPy",
+    "Matplotlib", "OpenCV", "NLTK", "spaCy", "Hugging Face", "Transformers", "LangChain", "LLM", "Computer Vision",
+    "NLP", "XGBoost", "MLOps", "MLflow", "Feature Engineering", "Neural Networks", "Prompt Engineering", "RAG",
+    "Embeddings", "Vector Databases", "Data Analysis", "Transfer Learning", "Fine-tuning", "Overfitting",
+    "Cross-validation", "CNN", "LSTM", "BERT", "YOLO", "ResNet", "MobileNetV2", "MobileNet", "MediaPipe", "Whisper",
+    "Speech-to-Text", "Data Augmentation", "Precision", "Recall", "F1",
+    "PostgreSQL", "MySQL", "MongoDB", "Redis", "SQLite", "Firebase",
+    "AWS", "Azure", "GCP", "Docker", "Kubernetes", "CI/CD", "Git", "GitHub", "Linux",
+    "Jupyter", "REST API", "GraphQL", "Agile", "Scrum"
+  ];
+
+  function containsTerm(lowerText, term) {
+    return new RegExp(NOT_BEFORE + esc(term.toLowerCase()) + NOT_AFTER).test(lowerText);
+  }
+
+  function extractTechTerms(text, extraTerms) {
+    const lower = text.toLowerCase();
+    const all = Array.from(new Set(TECH_TERMS.concat(extraTerms || [])));
+    return all.filter(t => containsTerm(lower, t)).sort();
+  }
+
+  function paceLabel(wpm) { return wpm < PACE_SLOW ? "slow" : wpm > PACE_FAST ? "fast" : "good"; }
+  function durationLabel(s) { return s < IDEAL_MIN_SEC ? "short" : s > IDEAL_MAX_SEC ? "long" : "good"; }
+
+  function analyzeDelivery(text, durationSec, eventTimesMs, extraTerms) {
+    const words = tokenize(text);
+    const n = words.length;
+    const wpm = durationSec >= MIN_PACE_SEC ? Math.round(n / (durationSec / 60) * 10) / 10 : null; // أقل من 8 ثواني: القياس مش موثوق
+    const f = countFillers(text);
+    return {
+      language: detectLanguage(text),
+      wordCount: n,
+      durationSec: durationSec ? Math.round(durationSec * 10) / 10 : null,
+      durationLabel: durationSec ? durationLabel(durationSec) : null,
+      wpm,
+      paceLabel: wpm ? paceLabel(wpm) : null,
+      fillerTotal: f.total,
+      fillerPer100: n ? Math.round(f.total / n * 1000) / 10 : 0,
+      fillersByWord: f.byWord,
+      longestGapSec: longestGapSec(eventTimesMs),
+      technicalTerms: extractTechTerms(text, extraTerms)
+    };
+  }
+
+  // ---------- فحص STAR بالقواعد (بيكتشف عبارات، مش جودة) ----------
+  const STAR_CUES = {
+    situation: {
+      en: ["when i", "while i", "during", "at university", "at my university", "at college", "at work",
+        "in my project", "in our project", "in the project", "graduation project", "final year", "last year",
+        "last semester", "we were", "there was", "our team", "my team", "internship"],
+      ar: ["لما", "عندما", "خلال", "اثناء", "بالجامعة", "بالجامعه", "بمشروع", "بمشروعي", "السنة الاخيرة",
+        "السنه الاخيره", "كنا", "فريقنا", "التدريب", "مشروع التخرج"]
+    },
+    task: {
+      en: ["my goal", "the goal", "goal was", "i had to", "i needed to", "we needed to", "responsible for",
+        "the task", "the challenge", "the problem", "the aim", "objective", "needed to", "had to"],
+      ar: ["هدفي", "الهدف", "كان لازم", "لازم", "مسؤولة", "مسوولة", "مسؤول", "المشكلة", "المشكله", "التحدي",
+        "المطلوب", "بدنا", "بدي"]
+    },
+    action: {
+      en: ["i built", "i implemented", "i used", "i trained", "i designed", "i developed", "i decided", "i created",
+        "i tested", "i fine-tuned", "i deployed", "i wrote", "i collected", "i cleaned", "i evaluated", "i chose",
+        "i selected", "i applied", "i integrated", "i compared"],
+      ar: ["عملت", "بنيت", "استخدمت", "دربت", "صممت", "طورت", "قررت", "كتبت", "جمعت", "نظفت", "قيمت",
+        "اخترت", "طبقت", "دمجت", "نشرت", "جربت", "اشتغلت", "برمجت", "قارنت"]
+    },
+    result: {
+      en: ["result", "accuracy", "improved", "reduced", "increased", "achieved", "outcome", "led to", "resulted",
+        "percent", "faster", "decreased", "reached", "score"],
+      ar: ["النتيجة", "النتيجه", "دقة", "دقه", "تحسنت", "تحسن", "قللت", "زادت", "حققت", "وصلت", "نتج",
+        "بنسبة", "بالمئة", "اسرع", "ادى"]
+    }
+  };
+
+  function findCues(normText, phrases) {
+    const hits = [];
+    phrases.forEach(p => {
+      const np = normalizeAr(p.toLowerCase());
+      if (new RegExp(NOT_BEFORE + esc(np) + NOT_AFTER).test(normText)) hits.push(p);
+    });
+    return hits;
+  }
+
+  function hasMetric(text) {
+    return /\d+(\.\d+)?\s?%/.test(text) || /\b\d{2,}\b/.test(text) ||
+      /(بالمئة|بالمية|percent)/i.test(text);
+  }
+
+  function pronounBalance(text) {
+    const t = text.toLowerCase();
+    const i = (t.match(/\bi\b|\bi'm\b|\bi've\b|\bmy\b/g) || []).length;
+    const we = (t.match(/\bwe\b|\bour\b|\bwe're\b/g) || []).length;
+    return { i, we };
+  }
+
+  function localEvaluation(question, text, delivery, userTechs) {
+    const norm = normalizeAr(text.toLowerCase());
+    const star = {};
+    Object.keys(STAR_CUES).forEach(k => {
+      const cues = STAR_CUES[k];
+      const hits = findCues(norm, cues.en.concat(cues.ar));
+      star[k] = { found: hits.length > 0 || (k === "result" && hasMetric(text)), evidence: hits.slice(0, 3) };
+    });
+
+    const notes = [];
+    const isTechOnly = question && question.type === "technical";
+    if (!hasMetric(text)) notes.push({ kind: "metric", en: "No concrete numbers or metrics. Add one measurable result (accuracy, time saved, dataset size).",
+      ar: "ما ذكرت{ي|} أرقام أو نتائج قابلة للقياس. ضيف{ي|} نتيجة وحدة بالأرقام (دقة، وقت موفّر، حجم البيانات)." });
+    const pb = pronounBalance(text);
+    if (pb.we >= 3 && pb.we > pb.i * 1.5) notes.push({ kind: "pronoun", en: "You say 'we' much more than 'I'. Make your own contribution clear.",
+      ar: "بتستخدم{ي|} 'we' أكتر بكثير من 'I'. وضّح{ي|} مساهمتك الشخصية." });
+    if (!isTechOnly && question && question.type === "project" && delivery.technicalTerms.length === 0) notes.push({ kind: "tech",
+      en: "No technical terms detected. Name the tools, models and metrics you used.", ar: "ما انكشفت مصطلحات تقنية. سمّ{ي|} الأدوات والنماذج والمقاييس اللي استخدمت{ي|}ها." });
+    const missingUser = (userTechs || []).filter(t => !containsTerm(text.toLowerCase(), t));
+    if (missingUser.length && question && question.id && question.id.indexOf("p_") === 0)
+      notes.push({ kind: "usertech", en: "You did not mention: " + missingUser.join(", ") + ".", ar: "ما ذكرت{ي|}: " + missingUser.join("، ") + "." });
+    if (delivery.durationLabel === "short") notes.push({ kind: "short", en: "Short answer. Aim for roughly 45–120 seconds with a clear structure.",
+      ar: "الإجابة قصيرة. استهدف{ي|} تقريباً 45–120 ثانية بهيكل واضح." });
+    if (delivery.durationLabel === "long") notes.push({ kind: "long", en: "Long answer. Cut to the key action and result.",
+      ar: "الإجابة طويلة. ركّز{ي|} على الفعل الأساسي والنتيجة." });
+    if (delivery.paceLabel === "fast") notes.push({ kind: "fast", en: "Fast pace. Slow down slightly so key terms land.", ar: "السرعة عالية. هدّ{ي|} شوي عشان تبين المصطلحات." });
+    if (delivery.paceLabel === "slow") notes.push({ kind: "slow", en: "Slow pace. Practise the answer once more to speak more fluidly.", ar: "السرعة بطيئة. جرّب{ي|} الإجابة مرة كمان لتصير أسلس." });
+    if (delivery.fillerPer100 >= 5) notes.push({ kind: "filler", en: "Frequent filler words. Replace them with a short silent pause.", ar: "كلمات حشو كثيرة. استبدل{ي|}ها بوقفة صامتة قصيرة." });
+
+    const GENERIC = ["python", "java", "javascript", "sql", "r", "git", "github", "linux", "machine learning", "deep learning",
+      "computer vision", "nlp", "data analysis", "neural networks", "rest api", "agile", "scrum", "llm", "precision", "recall", "f1"];
+    const lowerT = text.toLowerCase();
+    const firstPos = t => lowerT.search(new RegExp(NOT_BEFORE + esc(t.toLowerCase()) + NOT_AFTER));
+    const byOrder = arr => arr.slice().sort((a, b) => firstPos(a) - firstPos(b));
+    const mentionedUser = byOrder((userTechs || []).filter(t => containsTerm(lowerT, t)));
+    const specific = byOrder(delivery.technicalTerms.filter(t => GENERIC.indexOf(t.toLowerCase()) === -1));
+    const pick = mentionedUser[0] || specific[0] || delivery.technicalTerms[0];
+    const followup = pick
+      ? { en: "Why did you choose " + pick + " over the alternatives, and what trade-offs did you see?",
+          ar: "ليش اخترت{ي|} " + pick + " بدل البدائل، وشو التنازلات اللي شفت{ي|}ها؟" }
+      : { en: "What would you do differently if you repeated this?", ar: "شو كنت{ي|} رح تغير{ي|} لو أعدت{ي|} هالشي؟" };
+
+    const covered = Object.values(star).filter(s => s.found).length;
+    return { star, covered, notes, followup };
+  }
+
+  // ---------- الأسئلة ----------
+  const COMMON = [
+    { id: "c1", type: "behavioral", en: "Tell me about yourself and why you chose this field.", ar: "احكيلي عن نفسك وليش اخترت{ي|} هالمجال." },
+    { id: "c2", type: "behavioral", en: "Describe a time you faced a difficult problem and how you solved it.", ar: "احكيلي عن موقف واجهت{ي|} فيه مشكلة صعبة وكيف حليت{ي|}ها." },
+    { id: "c3", type: "behavioral", en: "Tell me about a time you worked in a team and something went wrong.", ar: "احكيلي عن مرة اشتغلت{ي|} فيها ضمن فريق وصار فيه مشكلة." },
+    { id: "c5", type: "behavioral", en: "Tell me about a time you disagreed with a teammate or a mentor, and how it ended.", ar: "احكيلي عن مرة اختلفت{ي|} فيها مع زميل أو مشرف وكيف انتهى الموضوع." },
+    { id: "c6", type: "behavioral", en: "As a fresh graduate, what do you lack compared with an experienced hire, and how will you close the gap?", ar: "كخريج جديد، شو الي ناقصك مقارنة بشخص خبرته أكثر وكيف رح تسدّ{ي|} الفجوة؟" },
+    { id: "c4", type: "behavioral", en: "What is a skill you are currently learning, and how are you learning it?", ar: "شو مهارة بتتعلم{ي|}ها حالياً وكيف بتتعلم{ي|}ها؟" }
+  ];
+  const ROLES = {
+    "AI Engineer": [
+      { id: "ai1", type: "project", en: "Tell me about a machine learning project you worked on.", ar: "احكيلي عن مشروع تعلم آلة اشتغلت{ي|} عليه." },
+      { id: "ai2", type: "technical", en: "How do you decide whether a model is overfitting, and what do you do about it?", ar: "كيف بتعرف{ي|} إذا النموذج عامل overfitting وشو بتعمل{ي|}؟" },
+      { id: "ai3", type: "technical", en: "Which evaluation metrics would you use for an imbalanced classification problem, and why?", ar: "أي مقاييس تقييم بتستخدم{ي|} لمشكلة تصنيف بياناتها غير متوازنة وليش؟" },
+      { id: "ai4", type: "technical", en: "Explain how you would deploy a trained model as an API.", ar: "اشرح{ي|} كيف بتنشر{ي|} نموذج مدرّب كـ API." },
+      { id: "ai5", type: "technical", en: "What is the difference between fine-tuning a model and using retrieval-augmented generation?", ar: "شو الفرق بين fine-tuning وRAG؟" }
+    ],
+    "Data Scientist": [
+      { id: "ds1", type: "project", en: "Walk me through a data analysis project from raw data to insight.", ar: "خد{ي|}ني بجولة بمشروع تحليل بيانات من البيانات الخام لحد الاستنتاج." },
+      { id: "ds2", type: "technical", en: "How do you handle missing values and outliers?", ar: "كيف بتتعامل{ي|} مع القيم المفقودة والقيم الشاذة؟" },
+      { id: "ds3", type: "technical", en: "Explain the bias-variance tradeoff in simple terms.", ar: "اشرح{ي|} الـ bias-variance tradeoff ببساطة." },
+      { id: "ds4", type: "technical", en: "How would you explain a model's result to a non-technical stakeholder?", ar: "كيف بتشرح{ي|} نتيجة نموذج لشخص مش تقني؟" }
+    ],
+    "Computer Vision Engineer": [
+      { id: "cv1", type: "project", en: "Tell me about a computer vision project: the data, the model and how you measured it.", ar: "احكيلي عن مشروع computer vision: الداتا والنموذج وكيف قسمت{ي|} الأداء." },
+      { id: "cv2", type: "technical", en: "How do you reduce overfitting when you only have a small image dataset?", ar: "كيف بتقلل{ي|} الـ overfitting لما يكون عندك dataset صور صغيرة؟" },
+      { id: "cv3", type: "technical", en: "Why would you use transfer learning, and how do you choose which layers to freeze?", ar: "ليش بتستخدم{ي|} transfer learning وكيف بتقرر{ي|} أي layers بتجمّد{ي|}ها؟" },
+      { id: "cv4", type: "technical", en: "How would you make a vision model fast enough to run on a mobile device?", ar: "كيف بتخلي{ي|} نموذج vision سريع كفاية يشتغل على موبايل؟" }
+    ],
+    "NLP Engineer": [
+      { id: "nl1", type: "project", en: "Tell me about an NLP project: the text data, preprocessing and the model you used.", ar: "احكيلي عن مشروع NLP: بيانات النص والمعالجة المسبقة والنموذج." },
+      { id: "nl2", type: "technical", en: "How do you handle Arabic or other morphologically rich languages in an NLP pipeline?", ar: "كيف بتتعامل{ي|} مع العربية أو لغات غنية صرفياً بالـ NLP pipeline؟" },
+      { id: "nl3", type: "technical", en: "When would you use embeddings plus a classifier instead of fine-tuning a transformer?", ar: "متى بتستخدم{ي|} embeddings مع classifier بدل fine-tuning لـ transformer؟" },
+      { id: "nl4", type: "technical", en: "How would you evaluate a text generation or summarisation system?", ar: "كيف بتقيّم{ي|} نظام توليد نصوص أو تلخيص؟" }
+    ],
+    "Data Analyst": [
+      { id: "da1", type: "project", en: "Describe an analysis you did that led to a clear recommendation.", ar: "اوصف{ي|} تحليل عملته{ي|} وطلع منه توصية واضحة." },
+      { id: "da2", type: "technical", en: "How would you check whether a dashboard number is wrong?", ar: "كيف بتتأكد{ي|} إذا رقم بالـ dashboard غلط؟" },
+      { id: "da3", type: "technical", en: "Explain a SQL query with a JOIN and a GROUP BY and when it can double-count rows.", ar: "اشرح{ي|} query فيه JOIN وGROUP BY ومتى ممكن يعدّ صفوف مرتين." },
+      { id: "da4", type: "technical", en: "How do you decide which chart to use for a given question?", ar: "كيف بتختار{ي|} نوع الرسم المناسب لسؤال معين؟" }
+    ],
+    "Backend / Software Engineer": [
+      { id: "se1", type: "project", en: "Describe the architecture of a backend project you built.", ar: "اوصف{ي|} معمارية مشروع backend بنيت{ي|}ه." },
+      { id: "se2", type: "technical", en: "How do you design a REST API so it is easy to maintain?", ar: "كيف بتصمم{ي|} REST API بحيث يكون سهل الصيانة؟" },
+      { id: "se3", type: "technical", en: "How do you debug a bug that only happens in production?", ar: "كيف بتتعامل{ي|} مع bug بيصير بس على الـ production؟" },
+      { id: "se4", type: "technical", en: "What is the difference between SQL and NoSQL databases, and when would you choose each?", ar: "شو الفرق بين SQL وNoSQL ومتى بتختار{ي|} كل واحد؟" }
+    ]
+  };
+
+  // يطبّق صيغة الخطاب العربي: {ي|} => مؤنث "ي" / مذكر ""
+  function gend(str, g) {
+    return String(str).replace(/\{([^|}]*)\|([^}]*)\}/g, (_, f, m) => (g === "m" ? m : f));
+  }
+
+  function listRoles() { return Object.keys(ROLES); }
+  function getQuestions(role) {
+    if (!ROLES[role]) throw new Error("Unknown role: " + role);
+    return ROLES[role].concat(COMMON);
+  }
+  function projectQuestions(name, techs) {
+    const qs = [{ id: "p_overview", type: "project",
+      en: "Give me a two-minute overview of your project '" + name + "': the problem, your approach, and the result.",
+      ar: "اعطيني نظرة عامة بدقيقتين عن مشروعك '" + name + "': المشكلة، طريقة الحل، والنتيجة." }];
+    (techs || []).forEach((t, i) => qs.push({ id: "p_tech" + i, type: "project",
+      en: "How did you use " + t + " in '" + name + "', and why did you choose it over the alternatives?",
+      ar: "كيف استخدمت{ي|} " + t + " بمشروع '" + name + "' وليش اخترت{ي|}ه بدل البدائل؟" }));
+    qs.push({ id: "p_challenge", type: "project",
+      en: "What was the hardest technical challenge in '" + name + "', and what would you do differently now?",
+      ar: "شو كان أصعب تحدي تقني بمشروع '" + name + "' وشو كنت{ي|} رح تغير{ي|} لو بدك تعيديه؟" });
+    return qs;
+  }
+
+  return { gend, analyzeDelivery, countFillers, detectLanguage, longestGapSec, extractTechTerms, localEvaluation,
+    listRoles, getQuestions, projectQuestions, tokenize, normalizeAr, TECH_TERMS };
+})();
+
+
+
+</script>
+<script>
+(function () {
+  const L = CoachLogic;
+  const $ = id => document.getElementById(id);
+  const h = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const HKEY = "clc_history_v1", SKEY = "clc_settings_v1";
+  let MEM = [], KEEP = false;
+
+  let baseQs = [], projectQs = [], extraQs = [], questions = [], idx = 0, projectTechs = [];
+  let rec = null, recording = false, finalText = "", startedAt = 0, elapsedMs = 0, timer = null, sessions = [], cur = null;
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const gender = () => $("gender").value;
+  const ansLang = () => ($("lang").value.indexOf("ar") === 0 ? "ar" : "en");
+  const qText = (q, lang) => lang === "ar" ? L.gend(q.ar, gender()) : q.en;
+
+  // ---------- إعدادات ----------
+  function loadSettings() {
+    try { const s = JSON.parse(localStorage.getItem(SKEY) || "{}");
+      KEEP = s.keep === true; $("keepHist").checked = KEEP;
+      if (!KEEP) { localStorage.removeItem(HKEY); localStorage.removeItem(SKEY); return; }
+      if (s.role) $("role").value = s.role; if (s.lang) $("lang").value = s.lang; if (s.gender) $("gender").value = s.gender; } catch (e) {}
+  }
+  function saveSettings() {
+    if (!KEEP) return;
+    try { localStorage.setItem(SKEY, JSON.stringify({ keep: true, role: $("role").value, lang: $("lang").value, gender: $("gender").value })); } catch (e) {}
+  }
+
+  // ---------- الأسئلة ----------
+  function rebuild(keepIdx) {
+    baseQs = L.getQuestions($("role").value);
+    questions = projectQs.concat(baseQs).concat(extraQs);
+    if (!keepIdx) idx = 0;
+    if (idx >= questions.length) idx = 0;
+    showQuestion();
+  }
+  function showQuestion() {
+    const q = questions[idx], la = ansLang(), other = la === "ar" ? "en" : "ar";
+    $("qcount").textContent = "Question " + (idx + 1) + " of " + questions.length;
+    $("qtype").textContent = q.type === "project" ? "Project" : q.type === "technical" ? "Technical" : "Behavioral";
+    const main = $("qmain"), alt = $("qalt");
+    main.textContent = qText(q, la); main.setAttribute("dir", la === "ar" ? "rtl" : "ltr"); main.setAttribute("lang", la);
+    alt.textContent = qText(q, other); alt.setAttribute("dir", other === "ar" ? "rtl" : "ltr"); alt.setAttribute("lang", other);
+    $("prevBtn").disabled = idx === 0; $("nextBtn").disabled = idx === questions.length - 1;
+  }
+  function resetAnswer() {
+    stopRec();
+    $("answer").value = ""; finalText = ""; elapsedMs = 0; sessions = []; cur = null;
+    $("timer").textContent = "00:00"; $("report").style.display = "none"; setStatus("");
+    $("analyzeHint").textContent = "";
+  }
+  function goTo(i) { idx = i; resetAnswer(); showQuestion(); }
+
+  // ---------- التسجيل ----------
+  function setStatus(msg, err) { const s = $("status"); s.textContent = msg || ""; s.className = "status" + (err ? " err" : ""); }
+  const fmt = ms => { const t = Math.floor(ms / 1000); return String(Math.floor(t / 60)).padStart(2, "0") + ":" + String(t % 60).padStart(2, "0"); };
+
+  function startRec() {
+    if (!SR) return;
+    finalText = $("answer").value.trim(); if (finalText) finalText += " ";
+    rec = new SR(); rec.lang = $("lang").value; rec.continuous = true; rec.interimResults = true;
+    cur = []; sessions.push(cur);
+    rec.onresult = e => {
+      cur.push(Date.now());
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i];
+        if (r.isFinal) finalText += r[0].transcript + " "; else interim += r[0].transcript;
+      }
+      $("answer").value = (finalText + interim).trim();
+    };
+    rec.onerror = e => {
+      if (e.error === "no-speech" || e.error === "aborted") return;
+      const msg = { "not-allowed": "Microphone access was blocked. Allow it in your browser’s address bar and try again.",
+        "service-not-allowed": "Speech recognition is blocked in this browser or page.",
+        "audio-capture": "No microphone was found.", "network": "The speech service could not be reached. Check your connection, or type your answer.",
+        "language-not-supported": "This language is not supported by your browser’s speech service." }[e.error] || ("Speech recognition error: " + e.error);
+      recording = false; paint(); setStatus(msg, true);
+    };
+    rec.onend = () => { if (recording) { try { cur = []; sessions.push(cur); rec.start(); } catch (e) { recording = false; paint(); } } };
+    try { rec.start(); } catch (e) { setStatus("Could not start recording: " + e.message, true); return; }
+    recording = true; startedAt = Date.now(); paint(); setStatus("Listening… speak naturally, then press Stop.");
+    timer = setInterval(() => { $("timer").textContent = fmt(elapsedMs + Date.now() - startedAt); }, 250);
+  }
+  function stopRec() {
+    if (!recording) return;
+    recording = false; elapsedMs += Date.now() - startedAt; clearInterval(timer);
+    try { rec.stop(); } catch (e) {}
+    $("timer").textContent = fmt(elapsedMs); paint(); setStatus("Stopped. Check the transcript, fix any mistakes, then analyse.");
+  }
+  function paint() {
+    const b = $("recBtn"); b.classList.toggle("on", recording); b.setAttribute("aria-pressed", recording ? "true" : "false");
+    $("recLabel").textContent = recording ? "Stop" : (elapsedMs ? "Continue answering" : "Start answering");
+  }
+
+  // ---------- التحليل ----------
+  const paceTxt = { slow: "Slow", good: "On target", fast: "Fast" };
+  const durTxt = { short: "Short", good: "Good length", long: "Long" };
+
+  async function analyze() {
+    if (recording) stopRec();
+    const text = $("answer").value.trim(), q = questions[idx];
+    if (L.tokenize(text).length < 5) { setStatus("Your answer is too short to analyse. Say or type at least a few sentences.", true); return; }
+    const durSec = elapsedMs / 1000;
+    const d = L.analyzeDelivery(text, durSec, null, projectTechs);
+    d.longestGapSec = sessions.reduce((m, s) => Math.max(m, L.longestGapSec(s)), 0);
+    const ev = L.localEvaluation(q, text, d, projectTechs);
+    const la = ansLang();
+    renderReport(q, d, ev, la);
+    saveHistory(q, d, ev);
+    renderHistory();
+    $("report").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function tile(k, v, s, tagHtml) { return '<div class="tile"><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="s">' + (tagHtml || "") + " " + (s || "") + "</div></div>"; }
+
+  function renderReport(q, d, ev, la) {
+    $("report").style.display = "block";
+    $("repQ").textContent = qText(q, la); $("repQ").setAttribute("dir", la === "ar" ? "rtl" : "ltr");
+    const t = [];
+    if (d.wpm) t.push(tile("Pace", d.wpm + " <small>wpm</small>", "", '<span class="tag ' + (d.paceLabel === "good" ? "ok" : "warn") + '">' + paceTxt[d.paceLabel] + "</span>"));
+    else t.push(tile("Pace", "—", d.durationSec ? "Too short to measure (under 8 seconds)" : "Not available for typed answers", ""));
+    if (d.durationSec) t.push(tile("Duration", Math.round(d.durationSec) + " <small>sec</small>", "", '<span class="tag ' + (d.durationLabel === "good" ? "ok" : "warn") + '">' + durTxt[d.durationLabel] + "</span>"));
+    else t.push(tile("Duration", "—", "Record to measure", ""));
+    const top = Object.keys(d.fillersByWord).map(k => h(k) + " ×" + d.fillersByWord[k]).join(", ");
+    t.push(tile("Filler words", d.fillerTotal, d.fillerPer100 + " per 100 words" + (top ? "<br>" + top : "") + "<br>estimate: recognizers often drop “um/uh”", ""));
+    t.push(tile("Longest silence", d.durationSec ? d.longestGapSec + " <small>sec</small>" : "—", "estimate, from recognizer pauses", ""));
+    $("tiles").innerHTML = t.join("");
+    $("techBlock").innerHTML = d.technicalTerms.length
+      ? '<div class="hint" style="margin:0 0 8px">Technical terms you used (' + d.technicalTerms.length + ")</div><div class=\"chips\">" + d.technicalTerms.map(x => '<span class="chip">' + h(x) + "</span>").join("") + "</div>"
+      : '<div class="hint">No technical terms detected in this answer.</div>';
+
+    $("structBadge").textContent = "phrase check: " + ev.covered + " of 4 STAR cues found · not a quality score";
+    const names = { situation: "Situation", task: "Task", action: "Action", result: "Result" };
+    $("star").innerHTML = Object.keys(names).map(k => {
+      const s = ev.star[k];
+      return '<div class="r"><div class="n">' + names[k] + '</div><div class="d">' + (s.found
+        ? '<span class="tag ok">✓ detected</span> ' + (s.evidence.length ? "“" + s.evidence.map(h).join("”, “") + "”" : "numbers or metrics found")
+        : '<span class="tag warn">✗ not detected</span> add a sentence about the ' + names[k].toLowerCase()) + "</div></div>";
+    }).join("");
+
+    $("notes").innerHTML = ev.notes.length
+      ? ev.notes.map(n => "<li dir=\"auto\">" + h(la === "ar" ? L.gend(n.ar, gender()) : n.en) + "</li>").join("")
+      : "<li>No issues flagged by the automatic checks. Keep practising with the next question.</li>";
+    setFollow(la === "ar" ? L.gend(ev.followup.ar, gender()) : ev.followup.en);
+  }
+  function setFollow(text) { $("followText").textContent = text; $("followText").setAttribute("dir", "auto"); }
+
+  // ---------- السجل ----------
+  function readHist() { if (!KEEP) return MEM; try { return JSON.parse(localStorage.getItem(HKEY) || "[]"); } catch (e) { return []; } }
+  function writeHist(a) { a = a.slice(-30); if (!KEEP) { MEM = a; return; } try { localStorage.setItem(HKEY, JSON.stringify(a)); } catch (e) {} }
+  function saveHistory(q, d, ev) {
+    const a = readHist();
+    a.push({ t: Date.now(), q: q.en.slice(0, 70), wpm: d.wpm, fill: d.fillerPer100, cov: ev.covered, dur: d.durationSec });
+    writeHist(a);
+  }
+  function renderHistory() {
+    const a = readHist(), last = a.slice(-10);
+    const tbl = $("histTable"), chart = $("histChart");
+    if (!a.length) { tbl.style.display = "none"; chart.innerHTML = ""; $("histHint").textContent = "Answer a few questions to see your trend."; return; }
+    $("histHint").textContent = last.length < 2 ? "Answer one more question to see your trend chart."
+      : (KEEP ? "Saved only on this device. " : "Not saved: cleared when you leave this page. ") + "Bars show filler words per 100 words for your last " + last.length + " answers (lower is better).";
+    if (last.length >= 2) {
+      const W = 640, H = 150, pad = 28, max = Math.max(5, Math.max.apply(null, last.map(x => x.fill))) , bw = (W - pad * 2) / last.length;
+      let svg = '<svg class="hist-chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Filler words per 100 words across your last ' + last.length + ' answers: ' + last.map(x => x.fill).join(", ") + '">';
+      svg += '<line x1="' + pad + '" y1="' + (H - 24) + '" x2="' + (W - pad) + '" y2="' + (H - 24) + '" stroke="var(--border)" stroke-width="1"/>';
+      last.forEach((x, i) => {
+        const bh = Math.max(2, (x.fill / max) * (H - 60)), bx = pad + i * bw + 3, by = H - 24 - bh;
+        svg += '<path d="M' + bx + " " + (H - 24) + "V" + (by + 4) + "Q" + bx + " " + by + " " + (bx + 4) + " " + by + "H" + (bx + bw - 10) + "Q" + (bx + bw - 6) + " " + by + " " + (bx + bw - 6) + " " + (by + 4) + "V" + (H - 24) + 'Z" fill="var(--accent)"><title>' + new Date(x.t).toLocaleDateString() + ": " + x.fill + " per 100 words</title></path>";
+        svg += '<text x="' + (bx + (bw - 6) / 2) + '" y="' + (by - 6) + '" text-anchor="middle" font-size="11" fill="var(--text-dim)" font-family="IBM Plex Mono, monospace">' + x.fill + "</text>";
+        svg += '<text x="' + (bx + (bw - 6) / 2) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10" fill="var(--text-dim)" font-family="IBM Plex Mono, monospace">' + (a.length - last.length + i + 1) + "</text>";
+      });
+      chart.innerHTML = svg + "</svg>";
+    } else chart.innerHTML = "";
+    tbl.style.display = "table";
+    tbl.innerHTML = "<thead><tr><th>#</th><th>Question</th><th>Pace (wpm)</th><th>Fillers / 100</th><th>STAR (of 4)</th></tr></thead><tbody>" +
+      last.map((x, i) => "<tr><td>" + (a.length - last.length + i + 1) + '</td><td class="q">' + h(x.q) + "</td><td>" + (x.wpm == null ? "—" : x.wpm) + "</td><td>" + x.fill + "</td><td>" + x.cov + "</td></tr>").join("") + "</tbody>";
+  }
+
+  // ---------- ربط الأحداث ----------
+  L.listRoles().forEach(r => { const o = document.createElement("option"); o.value = r; o.textContent = r; $("role").appendChild(o); });
+  loadSettings();
+  if (!SR) { $("srWarn").style.display = "block"; $("recBtn").disabled = true; }
+  $("role").addEventListener("change", () => { saveSettings(); resetAnswer(); rebuild(false); });
+  $("lang").addEventListener("change", () => { saveSettings(); if (recording) stopRec(); showQuestion(); });
+  $("gender").addEventListener("change", () => { saveSettings(); showQuestion(); });
+  $("recBtn").addEventListener("click", () => recording ? stopRec() : startRec());
+  $("prevBtn").addEventListener("click", () => goTo(idx - 1));
+  $("nextBtn").addEventListener("click", () => goTo(idx + 1));
+  $("analyzeBtn").addEventListener("click", analyze);
+  $("clearHist").addEventListener("click", () => { MEM = []; try { localStorage.removeItem(HKEY); } catch (e) {} renderHistory(); });
+  $("keepHist").addEventListener("change", () => {
+    KEEP = $("keepHist").checked;
+    if (KEEP) { try { localStorage.setItem(HKEY, JSON.stringify(MEM)); } catch (e) {} saveSettings(); }
+    else { MEM = []; try { localStorage.removeItem(HKEY); localStorage.removeItem(SKEY); } catch (e) {} }
+    renderHistory();
+  });
+  $("addProject").addEventListener("click", () => {
+    const name = $("pname").value.trim(), techs = $("ptech").value.split(",").map(s => s.trim()).filter(Boolean).slice(0, 6);
+    if (!name) { $("pname").focus(); return; }
+    projectTechs = techs; projectQs = L.projectQuestions(name, techs);
+    resetAnswer(); rebuild(false); $("q-h").scrollIntoView({ behavior: "smooth" });
+  });
+  $("followBtn").addEventListener("click", () => {
+    const text = $("followText").textContent.trim(); if (!text) return;
+    const q = { id: "f_" + Date.now(), type: "technical", en: text, ar: text };
+    extraQs.push(q); questions = projectQs.concat(baseQs).concat(extraQs);
+    goTo(questions.length - 1); $("q-h").scrollIntoView({ behavior: "smooth" });
+  });
+  rebuild(false); renderHistory();
+})();
+</script>
+</body>
+</html>
